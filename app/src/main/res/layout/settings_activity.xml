@@ -1,0 +1,134 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/settings"
+    android:background="@color/background_settings"
+    >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:padding="4dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btn_back_to_main"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/background_settings"
+            android:src="@drawable/arrow_back"></ImageButton>
+        <TextView
+            android:layout_width="304dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="48dp"
+            android:text="@string/title_settings"
+            android:textColor="@color/settings_title"
+            android:gravity="center|start"
+            android:paddingStart="12dp"
+            android:textSize="24sp" >
+        </TextView>
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:paddingEnd="6dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:text="@string/settings_dartk_theme"
+                android:textColor="@color/settings_text"
+                android:textFontWeight="400"
+
+                android:textSize="@dimen/settings_text_size" />
+
+            <Switch
+                android:layout_width="56dp"
+                android:layout_height="40dp"
+
+                android:layout_gravity="center|end" />
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:paddingEnd="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:text="@string/settings_share_app"
+                android:textColor="@color/settings_text"
+                android:textFontWeight="400"
+                android:textSize="@dimen/settings_text_size" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center|end"
+                android:backgroundTint="#ffffff"
+                android:src="@drawable/share_icon" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:paddingEnd="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:text="@string/settings_support"
+                android:textColor="@color/settings_text"
+                android:textFontWeight="400"
+                android:textSize="@dimen/settings_text_size" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center|end"
+                android:src="@drawable/support_icon" />
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:paddingEnd="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:text="@string/settings_license"
+                android:textColor="@color/settings_text"
+                android:textFontWeight="400"
+                android:textSize="@dimen/settings_text_size" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center|end"
+                android:src="@drawable/arrow_forward" />
+        </FrameLayout>
+
+    </LinearLayout>
+</LinearLayout>
