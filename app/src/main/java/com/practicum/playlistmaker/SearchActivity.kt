@@ -1,21 +1,18 @@
 package com.practicum.playlistmaker
 
-import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
+import androidx.core.view.isVisible
+import hideKeyboard
 
 class SearchActivity : AppCompatActivity() {
-
-    companion object {
-        const val SEARCH_VALUE = "SEARCH_VALUE"
-        const val SEARCH_DEF = ""
-    }
 
     private var searchValue: String = SEARCH_DEF
 
@@ -39,11 +36,6 @@ class SearchActivity : AppCompatActivity() {
 
         inputSearchText.setText(searchValue)
 
-        fun View.hideKeyboard() {
-            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(windowToken, 0)
-        }
-
         // clear button
         clearButton.setOnClickListener {
             inputSearchText.setText("")
@@ -56,7 +48,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                clearButton.visibility = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+                clearButton.isVisible = !s.isNullOrEmpty()
                 searchValue = s.toString()
             }
 
@@ -68,13 +60,18 @@ class SearchActivity : AppCompatActivity() {
 
 
         // button Назад
-//        val btnBackToMainActivity = findViewById<ImageButton>(R.id.btn_back_to_main)
-//        btnBackToMainActivity.setOnClickListener {
-//            startActivity(
-//                Intent(this, MainActivity::class.java)
-//            )
-//        }
+        val btnBackToMainActivity = findViewById<ImageButton>(R.id.btn_back_to_main)
+        btnBackToMainActivity.setOnClickListener {
+            startActivity(
+                Intent(this, MainActivity::class.java)
+            )
+        }
 
+    }
+
+    private companion object {
+        const val SEARCH_VALUE = "SEARCH_VALUE"
+        const val SEARCH_DEF = ""
     }
 
 

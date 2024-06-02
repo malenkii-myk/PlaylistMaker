@@ -21,38 +21,40 @@ class SettingsActivity : AppCompatActivity() {
         // button Share
         val btnShare = findViewById<View>(R.id.btn_share)
         btnShare.setOnClickListener {
-            val i = Intent(Intent.ACTION_SENDTO)
-            i.putExtra(Intent.EXTRA_TEXT, getString(R.string.app_name))
-            i.type = "text/plain"
-            startActivity( i )
+            val shareIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, getString(R.string.share_link))
+                type = "text/plain"
+            }
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.app_name)))
         }
 
         // button Support
         val btnSupport = findViewById<View>(R.id.btn_support)
         btnSupport.setOnClickListener {
-            val i = Intent(Intent.ACTION_SENDTO)
-            i.data = Uri.parse("mailto:")
-            i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.support_mail_subject))
-            i.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.support_mail_to)))
-            i.putExtra(Intent.EXTRA_TEXT, getString(R.string.support_mail_text))
-            startActivity( i )
+            val intent = Intent(Intent.ACTION_SENDTO)
+            intent.data = Uri.parse("mailto:")
+            intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.support_mail_subject))
+            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.support_mail_to)))
+            intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.support_mail_text))
+            startActivity( intent )
         }
 
         // button License
         val btnLicense = findViewById<View>(R.id.btn_license)
         btnLicense.setOnClickListener {
-            val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse( getString(R.string.offer_url) )
-            startActivity( i )
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse( getString(R.string.offer_url) )
+            startActivity( intent )
         }
 
         // button Назад
-//        val btnBackToMainActivity = findViewById<ImageButton>(R.id.btn_back_to_main)
-//        btnBackToMainActivity.setOnClickListener {
-//            startActivity(
-//                Intent(this, MainActivity::class.java)
-//            )
-//        }
+        val btnBackToMainActivity = findViewById<ImageButton>(R.id.btn_back_to_main)
+        btnBackToMainActivity.setOnClickListener {
+            startActivity(
+                Intent(this, MainActivity::class.java)
+            )
+        }
 
 
     }

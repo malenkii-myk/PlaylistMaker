@@ -9,6 +9,7 @@
 
     <FrameLayout style="@style/toolbar">
         <TextView style="@style/toolbar_text"
+            android:layout_marginStart="12dp"
             android:text="@string/title_main"
             android:textColor="?attr/colorOnPrimary">
         </TextView>
@@ -20,16 +21,19 @@
         <Button style="@style/main_button"
             android:id="@+id/btn_search"
             android:text="@string/search"
+            android:layout_weight="1"
             app:icon="@drawable/search_icon" />
 
         <Button style="@style/main_button"
             android:id="@+id/btn_library"
             android:text="@string/library"
+            android:layout_weight="1"
             app:icon="@drawable/library_icon" />
 
         <Button style="@style/main_button"
             android:id="@+id/btn_settings"
             android:text="@string/settings"
+            android:layout_weight="1"
             app:icon="@drawable/settings_icon" />
 
     </LinearLayout>

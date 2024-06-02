@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#3772E7</color>
@@ -12,13 +11,5 @@
 
     <!-- search text input -->
     <color name="gray_2">#E6E8EB</color>
-
-    <!-- const colors -->
-    <color name="main_button_bg">#FFFFFF</color>
-    <color name="main_button_text">#1A1B22</color>
-
-
-
-
 
 </resources>

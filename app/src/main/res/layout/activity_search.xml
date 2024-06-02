@@ -8,12 +8,8 @@
     android:id="@+id/search_activity">
 
     <FrameLayout style="@style/toolbar">
-<!--        <ImageButton-->
-<!--            android:id="@+id/btn_back_to_main"-->
-<!--            android:layout_width="48dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:backgroundTint="@color/background_settings"-->
-<!--            android:src="@drawable/arrow_back"></ImageButton>-->
+        <ImageButton style="@style/toolbar_btn_back"
+            android:id="@+id/btn_back_to_main" />
         <TextView style="@style/toolbar_text"
             android:text="@string/title_search"
             android:textColor="?attr/colorOnSecondary">
