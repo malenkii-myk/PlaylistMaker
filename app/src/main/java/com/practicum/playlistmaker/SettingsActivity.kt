@@ -21,12 +21,12 @@ class SettingsActivity : AppCompatActivity() {
         // button Share
         val btnShare = findViewById<View>(R.id.btn_share)
         btnShare.setOnClickListener {
-            val shareIntent = Intent().apply {
+            Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_TEXT, getString(R.string.share_link))
                 type = "text/plain"
+                startActivity(Intent.createChooser(this, getString(R.string.app_name)))
             }
-            startActivity(Intent.createChooser(shareIntent, getString(R.string.app_name)))
         }
 
         // button Support
@@ -51,9 +51,7 @@ class SettingsActivity : AppCompatActivity() {
         // button Назад
         val btnBackToMainActivity = findViewById<ImageButton>(R.id.btn_back_to_main)
         btnBackToMainActivity.setOnClickListener {
-            startActivity(
-                Intent(this, MainActivity::class.java)
-            )
+            finish()
         }
 
 

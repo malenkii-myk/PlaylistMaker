@@ -62,9 +62,7 @@ class SearchActivity : AppCompatActivity() {
         // button Назад
         val btnBackToMainActivity = findViewById<ImageButton>(R.id.btn_back_to_main)
         btnBackToMainActivity.setOnClickListener {
-            startActivity(
-                Intent(this, MainActivity::class.java)
-            )
+            finish()
         }
 
     }
