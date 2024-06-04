@@ -1,130 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/settings"
-    android:background="@color/background_settings"
-    >
+    android:theme="@style/Base.Theme.PlaylistMaker"
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height"
-        android:padding="@dimen/toolbar_padding"
-        android:orientation="horizontal">
+    style="@style/activity"
+    android:id="@+id/settings">
 
-        <ImageButton
-            android:id="@+id/btn_back_to_main"
-            android:layout_width="48dp"
-            android:layout_height="match_parent"
-            android:backgroundTint="@color/background_settings"
-            android:src="@drawable/arrow_back"></ImageButton>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="60dp"
+    <FrameLayout style="@style/toolbar">
+        <ImageButton style="@style/toolbar_btn_back"
+            android:id="@+id/btn_back_to_main" />
+        <TextView style="@style/toolbar_text"
             android:text="@string/title_settings"
-            android:textColor="@color/settings_title"
-            android:gravity="center|start"
-            android:textSize="@dimen/toolbar_text_size" >
+            android:textColor="?attr/colorOnSecondary">
         </TextView>
     </FrameLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <LinearLayout style="@style/body"
         android:padding="16dp"
-        android:paddingEnd="6dp"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical"
-        >
+        android:paddingEnd="6dp">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/settings_listitem_height"
-            >
-
+        <FrameLayout style="@style/settings_list_item"
+            android:paddingEnd="0dp">
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:text="@string/settings_dartk_theme"
-                android:textColor="@color/settings_text"
-                android:textFontWeight="400"
-
-                android:textSize="@dimen/settings_text_size" />
+                style="@style/settings_list_item_text"
+                android:text="@string/settings_dartk_theme" />
 
             <Switch
+                style="@style/switcher"
                 android:layout_width="56dp"
-                android:layout_height="40dp"
-
-                android:layout_gravity="center|end" />
+                android:layout_height="match_parent"
+                android:layout_gravity="center|end"
+                android:checked="true" />
         </FrameLayout>
 
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/settings_listitem_height"
-            android:paddingEnd="10dp">
-
+        <FrameLayout style="@style/settings_list_item"
+            android:id="@+id/btn_share">
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:text="@string/settings_share_app"
-                android:textColor="@color/settings_text"
-                android:textFontWeight="400"
-                android:textSize="@dimen/settings_text_size" />
-
+                style="@style/settings_list_item_text"
+                android:text="@string/settings_share_app" />
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center|end"
-
+                style="@style/settings_list_item_icon"
                 android:src="@drawable/share_icon" />
         </FrameLayout>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/settings_listitem_height"
-            android:paddingEnd="10dp">
-
+        <FrameLayout style="@style/settings_list_item"
+            android:id="@+id/btn_support">
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:text="@string/settings_support"
-                android:textColor="@color/settings_text"
-                android:textFontWeight="400"
-                android:textSize="@dimen/settings_text_size" />
-
+                style="@style/settings_list_item_text"
+                android:text="@string/settings_support" />
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center|end"
+                style="@style/settings_list_item_icon"
                 android:src="@drawable/support_icon" />
         </FrameLayout>
 
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/settings_listitem_height"
-            android:paddingEnd="10dp">
-
+        <FrameLayout style="@style/settings_list_item"
+            android:id="@+id/btn_license">
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|start"
-                android:text="@string/settings_license"
-                android:textColor="@color/settings_text"
-                android:textFontWeight="400"
-                android:textSize="@dimen/settings_text_size" />
-
+                style="@style/settings_list_item_text"
+                android:text="@string/settings_license" />
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center|end"
+                style="@style/settings_list_item_icon"
                 android:src="@drawable/arrow_forward" />
         </FrameLayout>
 

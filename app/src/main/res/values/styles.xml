@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="activity">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">?attr/colorSecondary</item>
+    </style>
+
+    <!-- toolbar -->
+    <style name="toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/toolbar_height</item>
+        <item name="android:padding">@dimen/toolbar_padding</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+    <style name="toolbar_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginStart">60dp</item>
+        <item name="android:gravity">center|start</item>
+        <item name="android:textSize">@dimen/toolbar_text_size</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+    </style>
+    <style name="toolbar_btn_back">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:backgroundTint">?attr/colorSecondary</item>
+        <item name="android:src">@drawable/arrow_back</item>
+        <item name="android:tint">?attr/colorOnSecondary</item>
+    </style>
+
+
+    <!-- body -->
+    <style name="body">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_marginTop">@dimen/body_margin_top</item>
+    </style>
+
+
+    <style name="main_button" parrent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_margin">@dimen/main_btn_margin</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:textColor">@color/light_black</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">@dimen/main_btn_text_size</item>
+        <item name="android:textAllCaps">false</item>
+
+        <item name="cornerRadius">@dimen/main_btn_radius</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">@dimen/main_btn_icon_padding</item>
+        <item name="iconTint">@color/light_black</item>
+    </style>
+
+
+    <!-- SETTINGS -->
+    <style name="settings_list_item">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/settings_listitem_height</item>
+        <item name="android:paddingEnd">10dp</item>
+    </style>
+
+    <style name="settings_list_item_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center|start</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/font_16</item>
+    </style>
+
+    <style name="settings_list_item_icon">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:layout_gravity">center|end</item>
+        <item name="android:tint">@color/gray</item>
+    </style>
+
+    <style name="switcher" >
+
+    </style>
+
+
+    <!-- SEARCH -->
+    <style name="search_input">
+        <item name="android:background">@color/gray_2</item>
+        <item name="android:textColor">@color/light_black</item>
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:drawableTint">@color/gray</item>
+    </style>
+
+
+
+</resources>
