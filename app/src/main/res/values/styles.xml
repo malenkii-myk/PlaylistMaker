@@ -87,10 +87,7 @@
         <item name="android:tint">@color/gray</item>
     </style>
 
-    <style name="switcher" >
-
-    </style>
-
+    <style name="switcher" ></style>
 
     <!-- SEARCH -->
     <style name="search_input">
@@ -100,6 +97,19 @@
         <item name="android:drawableTint">@color/gray</item>
     </style>
 
+    <style name="track_list_item_title">
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/font_16</item>
+    </style>
+    <style name="track_list_item_info">
+        <item name="android:textColor">?attr/track_info_color</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/font_11</item>
+        <item name="android:gravity">start|center_vertical</item>
+    </style>
 
 
 </resources>
