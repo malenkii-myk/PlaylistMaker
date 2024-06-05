@@ -21,7 +21,7 @@ class TracksViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         artistName.text = model.artistName
         trackTime.text = model.trackTime
 
-        if (!model.artworkUrl100.isNullOrEmpty()) {
+        if (model.artworkUrl100.isNotEmpty()) {
             Glide.with(itemView)
                 .load(Track.IMG_HOST + model.artworkUrl100)
                 .centerInside()

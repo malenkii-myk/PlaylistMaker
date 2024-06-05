@@ -7,14 +7,14 @@
     style="@style/activity"
     android:id="@+id/search_activity">
 
-    <FrameLayout style="@style/toolbar">
+    <LinearLayout style="@style/toolbar">
         <ImageButton style="@style/toolbar_btn_back"
             android:id="@+id/btn_back_to_main" />
         <TextView style="@style/toolbar_text"
             android:text="@string/title_search"
             android:textColor="?attr/colorOnSecondary">
         </TextView>
-    </FrameLayout>
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
