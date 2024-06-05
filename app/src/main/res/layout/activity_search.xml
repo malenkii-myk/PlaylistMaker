@@ -7,18 +7,18 @@
     style="@style/activity"
     android:id="@+id/search_activity">
 
-    <FrameLayout style="@style/toolbar">
+    <LinearLayout style="@style/toolbar">
         <ImageButton style="@style/toolbar_btn_back"
             android:id="@+id/btn_back_to_main" />
         <TextView style="@style/toolbar_text"
             android:text="@string/title_search"
             android:textColor="?attr/colorOnSecondary">
         </TextView>
-    </FrameLayout>
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="54dp"
         android:padding="8dp"
         android:paddingEnd="16dp"
         android:paddingStart="16dp"
@@ -36,14 +36,16 @@
             android:hint="@string/title_search"
             android:inputType="text"
             android:lines="1"
-            android:padding="8.5dp"
+            android:padding="8dp"
             android:paddingStart="12dp"
             android:singleLine="true"
             android:textAlignment="viewStart"
             android:textAllCaps="false"
             android:textFontWeight="400"
             android:textSize="@dimen/font_16"
-            app:cornerRadius="8dp" />
+            app:cornerRadius="8dp"
+            android:imeOptions="actionSearch"
+            />
 
 
         <ImageView
@@ -59,5 +61,10 @@
 
     </FrameLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trackList"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

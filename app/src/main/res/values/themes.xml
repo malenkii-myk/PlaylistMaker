@@ -1,5 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
+    <attr name="track_title_color" />
+    <attr name="track_info_color" />
+
     <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
 
         <!-- Primary brand color. -->
@@ -9,6 +12,9 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/white</item>
         <item name="colorOnSecondary">@color/light_black</item>
+
+        <item name="track_title_color">@color/black</item>
+        <item name="track_info_color">@color/gray</item>
 
     </style>
 
