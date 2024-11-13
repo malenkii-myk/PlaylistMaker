@@ -9,6 +9,9 @@
         <item name="colorSecondary">@color/light_black</item>
         <item name="colorSecondaryVariant">@color/white</item>
         <item name="colorOnSecondary">@color/white</item>
+
+        <item name="track_title_color">@color/white</item>
+        <item name="track_info_color">@color/white</item>
     </style>
 
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />

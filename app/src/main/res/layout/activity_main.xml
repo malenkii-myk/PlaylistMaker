@@ -7,13 +7,12 @@
     style="@style/activity"
     android:background="?attr/colorPrimary">
 
-    <FrameLayout style="@style/toolbar">
+    <LinearLayout style="@style/toolbar">
         <TextView style="@style/toolbar_text"
-            android:layout_marginStart="12dp"
             android:text="@string/title_main"
             android:textColor="?attr/colorOnPrimary">
         </TextView>
-    </FrameLayout>
+    </LinearLayout>
 
     <LinearLayout style="@style/body"
         android:padding="@dimen/main_btn_margin" >
