@@ -20,52 +20,31 @@
         android:padding="16dp"
         android:paddingEnd="6dp">
 
-        <FrameLayout style="@style/settings_list_item"
-            android:paddingEnd="0dp">
-            <TextView
-                style="@style/settings_list_item_text"
-                android:text="@string/settings_dartk_theme" />
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            style="@style/settings_list_item"
+            android:id="@+id/themeSwitcher"
+            android:theme="@style/themeSwitcher"
+            android:text="@string/settings_dark_theme" />
 
-            <Switch
-                style="@style/switcher"
-                android:id="@+id/switcher_dark_theme"
-                android:layout_width="56dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center|end"
-                android:checked="true" />
-        </FrameLayout>
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/settings_list_item"
+            android:id="@+id/btn_share"
+            android:drawableEnd="@drawable/share_icon"
+            android:text="@string/settings_share_app"
+            android:layout_marginEnd="4dp" />
 
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/settings_list_item"
+            android:id="@+id/btn_support"
+            android:drawableEnd="@drawable/support_icon"
+            android:text="@string/settings_support" />
 
-        <FrameLayout style="@style/settings_list_item"
-            android:id="@+id/btn_share">
-            <TextView
-                style="@style/settings_list_item_text"
-                android:text="@string/settings_share_app" />
-            <ImageView
-                style="@style/settings_list_item_icon"
-                android:src="@drawable/share_icon" />
-        </FrameLayout>
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/settings_list_item"
+            android:id="@+id/btn_license"
+            android:drawableEnd="@drawable/arrow_forward"
+            android:text="@string/settings_license" />
 
-        <FrameLayout style="@style/settings_list_item"
-            android:id="@+id/btn_support">
-            <TextView
-                style="@style/settings_list_item_text"
-                android:text="@string/settings_support" />
-            <ImageView
-                style="@style/settings_list_item_icon"
-                android:src="@drawable/support_icon" />
-        </FrameLayout>
-
-
-        <FrameLayout style="@style/settings_list_item"
-            android:id="@+id/btn_license">
-            <TextView
-                style="@style/settings_list_item_text"
-                android:text="@string/settings_license" />
-            <ImageView
-                style="@style/settings_list_item_icon"
-                android:src="@drawable/arrow_forward" />
-        </FrameLayout>
 
     </LinearLayout>
 </LinearLayout>

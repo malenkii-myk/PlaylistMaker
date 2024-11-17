@@ -15,9 +15,6 @@
         <item name="img_search_error_color">@color/white</item>
         <item name="search_textedit_bg">@color/white</item>
 
-        <item name="colorControlActivated">@color/blue</item>
-        <item name="colorSwitchThumbNormal">@color/gray</item>
-        <item name="android:colorForeground">@color/gray_2</item>
     </style>
 
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />
