@@ -27,8 +27,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
 
+    private lateinit var noResultsView: View
+    private lateinit var noInternetView: View
+    private lateinit var recyclerView: RecyclerView
+
     private var searchValue: String = SEARCH_DEF
-    private var dataTracks: ArrayList<Track> = arrayListOf()
 
     private val trackBaseUrl = "https://itunes.apple.com"
     private val retrofit = Retrofit.Builder()
@@ -55,50 +58,16 @@ class SearchActivity : AppCompatActivity() {
         val inputSearchText = findViewById<EditText>(R.id.input_search)
         val clearButton = findViewById<ImageView>(R.id.btn_search_clear)
         val searchView = findViewById<View>(R.id.search_activity)
-        val noResultsView = findViewById<View>(R.id.no_results)
-        val noInternetView = findViewById<View>(R.id.no_internet)
+        noResultsView = findViewById(R.id.no_results)
+        noInternetView = findViewById(R.id.no_internet)
 
         inputSearchText.setText(searchValue)
 
         // track list
-        val recyclerView = findViewById<RecyclerView>(R.id.trackList)
+        recyclerView = findViewById(R.id.trackList)
         recyclerView.layoutManager = LinearLayoutManager(this)
         trackAdapter.updateTracks(emptyList())
         recyclerView.adapter = trackAdapter
-
-
-
-        fun searchTracks(s: String){
-            if (s.isEmpty() || s.length < 3) {
-                trackAdapter.updateTracks(emptyList())
-                noResultsView.isVisible = false
-                recyclerView.isVisible = false
-                noInternetView.isVisible = false
-                return
-            }
-
-            trackService.search(s).enqueue(object : retrofit2.Callback<TrackResponse> {
-                override fun onResponse(call: retrofit2.Call<TrackResponse>, response: retrofit2.Response<TrackResponse>) {
-                    if (response.isSuccessful) {
-                        val trackList = response.body()?.results ?: emptyList()
-                        trackAdapter.updateTracks(trackList)
-                        noResultsView.isVisible = trackList.isEmpty()
-                        recyclerView.isVisible = trackList.isNotEmpty()
-                        noInternetView.isVisible = false
-                    } else {
-                        noResultsView.isVisible = false
-                        recyclerView.isVisible = false
-                        noInternetView.isVisible = true
-                    }
-                }
-                override fun onFailure(call: retrofit2.Call<TrackResponse>, t: Throwable) {
-                    noResultsView.isVisible = false
-                    recyclerView.isVisible = false
-                    noInternetView.isVisible = true
-                }
-            })
-        }
-
 
 
         // clear button
@@ -149,9 +118,37 @@ class SearchActivity : AppCompatActivity() {
             finish()
         }
 
+    }
 
+    private fun searchTracks(s: String){
+        if (s.isEmpty() || s.length < 3) {
+            trackAdapter.updateTracks(emptyList())
+            noResultsView.isVisible = false
+            recyclerView.isVisible = false
+            noInternetView.isVisible = false
+            return
+        }
 
-
+        trackService.search(s).enqueue(object : retrofit2.Callback<TrackResponse> {
+            override fun onResponse(call: retrofit2.Call<TrackResponse>, response: retrofit2.Response<TrackResponse>) {
+                if (response.isSuccessful) {
+                    val trackList = response.body()?.results ?: emptyList()
+                    trackAdapter.updateTracks(trackList)
+                    noResultsView.isVisible = trackList.isEmpty()
+                    recyclerView.isVisible = trackList.isNotEmpty()
+                    noInternetView.isVisible = false
+                } else {
+                    noResultsView.isVisible = false
+                    recyclerView.isVisible = false
+                    noInternetView.isVisible = true
+                }
+            }
+            override fun onFailure(call: retrofit2.Call<TrackResponse>, t: Throwable) {
+                noResultsView.isVisible = false
+                recyclerView.isVisible = false
+                noInternetView.isVisible = true
+            }
+        })
     }
 
     private companion object {

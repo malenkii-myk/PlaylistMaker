@@ -87,7 +87,7 @@
         <item name="android:tint">@color/gray</item>
     </style>
 
-    <style name="switcher" ></style>
+    <style name="switcher"></style>
 
     <!-- SEARCH -->
     <style name="search_input">
@@ -113,9 +113,7 @@
 
     <!-- ERRORS -->
     <style name="search_error_text">
-
         <item name="android:textColor">@color/black</item>
-
     </style>
 
     <style name="search_error_img">

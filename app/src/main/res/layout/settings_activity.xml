@@ -28,6 +28,7 @@
 
             <Switch
                 style="@style/switcher"
+                android:id="@+id/switcher_dark_theme"
                 android:layout_width="56dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center|end"

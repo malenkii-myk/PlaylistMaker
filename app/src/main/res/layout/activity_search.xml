@@ -45,7 +45,8 @@
             android:textAllCaps="false"
             android:textFontWeight="400"
             android:textSize="@dimen/font_16"
-            app:cornerRadius="8dp" />
+            android:background="@drawable/round_corners"
+            android:textCursorDrawable="@drawable/cursor" />
 
 
         <ImageView
