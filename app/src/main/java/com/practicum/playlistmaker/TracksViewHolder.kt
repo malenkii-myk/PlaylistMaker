@@ -19,11 +19,11 @@ class TracksViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     fun bind(model: Track) {
         trackName.text = model.trackName
         artistName.text = model.artistName
-        trackTime.text = model.trackTime
+        trackTime.text = model.getFormattedTrackTime()
 
         if (model.artworkUrl100.isNotEmpty()) {
             Glide.with(itemView)
-                .load(Track.IMG_HOST + model.artworkUrl100)
+                .load(model.artworkUrl100)
                 .centerInside()
                 .transform(RoundedCorners( dpToPx(itemView.context.resources.getDimension(R.dimen.tracklist_art_radius), itemView.context)))
                 .placeholder(R.drawable.track_placeholder)
