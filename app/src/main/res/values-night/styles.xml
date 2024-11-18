@@ -19,4 +19,9 @@
         <item name="android:backgroundTint">@color/white</item>
     </style>
 
+    <style name="btn_clear_history">
+        <item name="android:textColor">@color/light_black</item>
+        <item name="android:backgroundTint">@color/white</item>
+    </style>
+
 </resources>

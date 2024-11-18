@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 data class Track(
+    val trackId: Long,     // ID
     val trackName: String, // Название композиции
     val artistName: String, // Имя исполнителя
     val trackTimeMillis: Long, // Продолжительность трека
@@ -14,7 +15,4 @@ data class Track(
         return SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis)
     }
 
-    companion object {
-        val IMG_HOST: String = "https://is5-ssl.mzstatic.com/image/thumb/"
-    }
 }
