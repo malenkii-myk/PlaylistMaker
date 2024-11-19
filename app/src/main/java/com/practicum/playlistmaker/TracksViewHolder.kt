@@ -20,10 +20,11 @@ class TracksViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         trackName.text = model.trackName
         artistName.text = model.artistName
         trackTime.text = model.getFormattedTrackTime()
+        val artworkUrl100 = model.artworkUrl100 ?: ""
 
-        if (model.artworkUrl100.isNotEmpty()) {
+        if (artworkUrl100.isNotEmpty()) {
             Glide.with(itemView)
-                .load(model.artworkUrl100)
+                .load(artworkUrl100)
                 .centerInside()
                 .transform(RoundedCorners( dpToPx(itemView.context.resources.getDimension(R.dimen.tracklist_art_radius), itemView.context)))
                 .placeholder(R.drawable.track_placeholder)
