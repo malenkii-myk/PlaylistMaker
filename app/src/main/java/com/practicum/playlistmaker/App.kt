@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatDelegate
 
 class App : Application() {
 
-    var darkTheme = false
+    private var darkTheme = false
     lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate() {
@@ -15,6 +15,10 @@ class App : Application() {
         switchTheme(darkTheme)
 
         super.onCreate()
+    }
+
+    fun isDarkTheme(): Boolean {
+        return darkTheme
     }
 
     fun switchTheme(darkThemeEnabled: Boolean) {
@@ -37,6 +41,7 @@ class App : Application() {
         const val SP_DARK_THEME = "dark_theme"
         const val SP_SEARCH_HISTORY = "search_history"
         const val MAX_SEARCH_HISTORY = 10
+        const val MIN_LENGTH_SEARCH_QUERY = 3
     }
 
 

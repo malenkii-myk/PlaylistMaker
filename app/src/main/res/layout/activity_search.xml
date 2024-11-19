@@ -116,7 +116,7 @@
         />
 
         <Button
-            style="@style/search_error_btn_refresh"
+            style="@style/search_error_btn_action"
             android:id="@+id/btn_refresh"
             android:layout_width="wrap_content"
             android:paddingStart="14dp"
@@ -139,7 +139,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
 
         <TextView
@@ -163,10 +163,9 @@
             android:layout_weight="1" />
 
         <Button
-            style="@style/btn_clear_history"
+            style="@style/search_error_btn_action"
             android:id="@+id/btn_clear_history"
             android:layout_width="wrap_content"
-
             android:layout_height="36dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginVertical="24dp"

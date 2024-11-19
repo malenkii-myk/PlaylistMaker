@@ -22,6 +22,8 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import hideKeyboard
+import kotlinx.coroutines.Job
+import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -35,6 +37,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchHistoryRecycler: RecyclerView
     private lateinit var searchHistoryAdapter: SearchHistoryAdapter
     private lateinit var searchHistory: SearchHistory
+    private var searchJob: Call<TrackResponse>? = null
 
     private var searchValue: String = SEARCH_DEF
 
@@ -91,7 +94,7 @@ class SearchActivity : AppCompatActivity() {
         clearButton.setOnClickListener {
             inputSearchText.setText("")
             searchView.hideKeyboard()
-            searchValue=""
+            searchValue = ""
         }
 
         // button Clear History
@@ -112,7 +115,7 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.isVisible = !s.isNullOrEmpty()
                 searchValue = s.toString().trim()
-                showSearchHistory( inputSearchText.hasFocus() && s?.isEmpty() == true )
+                showSearchHistory(inputSearchText.hasFocus() && s?.isEmpty() == true)
                 searchTracks(searchValue)
             }
 
@@ -124,7 +127,7 @@ class SearchActivity : AppCompatActivity() {
 
         inputSearchText.setOnFocusChangeListener { view, hasFocus ->
             updateSearchHistory()
-            showSearchHistory( hasFocus && inputSearchText.text.isEmpty() )
+            showSearchHistory(hasFocus && inputSearchText.text.isEmpty())
         }
 
 
@@ -140,7 +143,7 @@ class SearchActivity : AppCompatActivity() {
 
         // button Refresh
         val btnRefresh = findViewById<Button>(R.id.btn_refresh)
-        btnRefresh.setOnClickListener{
+        btnRefresh.setOnClickListener {
             searchTracks(searchValue)
         }
 
@@ -153,8 +156,10 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    private fun searchTracks(s: String){
-        if (s.isEmpty() || s.length < 3) {
+
+    private fun searchTracks(s: String) {
+        searchJob?.cancel()
+        if (s.isEmpty() || s.length < App.MIN_LENGTH_SEARCH_QUERY) {
             trackAdapter.updateTracks(emptyList())
             noResultsView.visibility =
                 if (s.isEmpty() && inputSearchText.text.isNotEmpty()) View.VISIBLE else View.GONE
@@ -162,10 +167,13 @@ class SearchActivity : AppCompatActivity() {
             noInternetView.isVisible = false
             return
         }
-
-        trackService.search(s).enqueue(object : retrofit2.Callback<TrackResponse> {
-            override fun onResponse(call: retrofit2.Call<TrackResponse>, response: retrofit2.Response<TrackResponse>) {
-                showSearchHistory( false )
+        searchJob = trackService.search(s)
+        searchJob?.enqueue(object : retrofit2.Callback<TrackResponse> {
+            override fun onResponse(
+                call: retrofit2.Call<TrackResponse>,
+                response: retrofit2.Response<TrackResponse>
+            ) {
+                showSearchHistory(false)
                 if (response.isSuccessful) {
                     val trackList = response.body()?.results ?: emptyList()
                     trackAdapter.updateTracks(trackList)
@@ -178,6 +186,7 @@ class SearchActivity : AppCompatActivity() {
                     noInternetView.isVisible = true
                 }
             }
+
             override fun onFailure(call: retrofit2.Call<TrackResponse>, t: Throwable) {
                 noResultsView.isVisible = false
                 recyclerView.isVisible = false
@@ -188,7 +197,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
 
-    private fun showSearchHistory(isVisible: Boolean){
+    private fun showSearchHistory(isVisible: Boolean) {
         searchHistoryView.visibility = if (isVisible && searchHistoryAdapter.itemCount > 0)
             View.VISIBLE else View.GONE
     }

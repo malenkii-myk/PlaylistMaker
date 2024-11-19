@@ -14,12 +14,7 @@
         <item name="android:layout_marginTop">16dp</item>
     </style>
 
-    <style name="search_error_btn_refresh">
-        <item name="android:textColor">@color/black</item>
-        <item name="android:backgroundTint">@color/white</item>
-    </style>
-
-    <style name="btn_clear_history">
+    <style name="search_error_btn_action">
         <item name="android:textColor">@color/light_black</item>
         <item name="android:backgroundTint">@color/white</item>
     </style>
