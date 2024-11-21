@@ -22,14 +22,22 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import hideKeyboard
+import kotlinx.coroutines.Job
+import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
 
+    private lateinit var inputSearchText: EditText
     private lateinit var noResultsView: View
     private lateinit var noInternetView: View
+    private lateinit var searchHistoryView: View
     private lateinit var recyclerView: RecyclerView
+    private lateinit var searchHistoryRecycler: RecyclerView
+    private lateinit var searchHistoryAdapter: SearchHistoryAdapter
+    private lateinit var searchHistory: SearchHistory
+    private var searchJob: Call<TrackResponse>? = null
 
     private var searchValue: String = SEARCH_DEF
 
@@ -39,7 +47,10 @@ class SearchActivity : AppCompatActivity() {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val trackService = retrofit.create(trackApi::class.java)
-    private var trackAdapter = TrackAdapter(emptyList())
+    private var trackAdapter = TrackAdapter(emptyList()) { track ->
+        searchHistory.addTrack(track)
+        updateSearchHistory()
+    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -55,13 +66,22 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val inputSearchText = findViewById<EditText>(R.id.input_search)
+        inputSearchText = findViewById(R.id.input_search)
         val clearButton = findViewById<ImageView>(R.id.btn_search_clear)
         val searchView = findViewById<View>(R.id.search_activity)
         noResultsView = findViewById(R.id.no_results)
         noInternetView = findViewById(R.id.no_internet)
 
         inputSearchText.setText(searchValue)
+
+        // history list
+        searchHistory = SearchHistory((applicationContext as App).sharedPreferences)
+        searchHistoryRecycler = findViewById(R.id.recycler_search_history)
+        searchHistoryRecycler.layoutManager = LinearLayoutManager(this)
+        searchHistoryAdapter = SearchHistoryAdapter(emptyList())
+        searchHistoryRecycler.adapter = searchHistoryAdapter
+        searchHistoryView = findViewById(R.id.search_history_view)
+        updateSearchHistory()
 
         // track list
         recyclerView = findViewById(R.id.trackList)
@@ -70,13 +90,23 @@ class SearchActivity : AppCompatActivity() {
         recyclerView.adapter = trackAdapter
 
 
-        // clear button
+        // clear "X" button
         clearButton.setOnClickListener {
             inputSearchText.setText("")
             searchView.hideKeyboard()
-            searchValue=""
+            searchValue = ""
         }
 
+        // button Clear History
+        val btnClearHistory = findViewById<Button>(R.id.btn_clear_history)
+        btnClearHistory.setOnClickListener {
+            searchHistory.clearHistory()
+            updateSearchHistory()
+            showSearchHistory(false)
+        }
+
+
+        // Input Search Text
         val simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // empty
@@ -85,6 +115,7 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.isVisible = !s.isNullOrEmpty()
                 searchValue = s.toString().trim()
+                showSearchHistory(inputSearchText.hasFocus() && s?.isEmpty() == true)
                 searchTracks(searchValue)
             }
 
@@ -93,6 +124,11 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         inputSearchText.addTextChangedListener(simpleTextWatcher)
+
+        inputSearchText.setOnFocusChangeListener { view, hasFocus ->
+            updateSearchHistory()
+            showSearchHistory(hasFocus && inputSearchText.text.isEmpty())
+        }
 
 
         // button Done
@@ -107,7 +143,7 @@ class SearchActivity : AppCompatActivity() {
 
         // button Refresh
         val btnRefresh = findViewById<Button>(R.id.btn_refresh)
-        btnRefresh.setOnClickListener{
+        btnRefresh.setOnClickListener {
             searchTracks(searchValue)
         }
 
@@ -120,17 +156,24 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    private fun searchTracks(s: String){
-        if (s.isEmpty() || s.length < 3) {
+
+    private fun searchTracks(s: String) {
+        searchJob?.cancel()
+        if (s.isEmpty() || s.length < App.MIN_LENGTH_SEARCH_QUERY) {
             trackAdapter.updateTracks(emptyList())
-            noResultsView.isVisible = false
+            noResultsView.visibility =
+                if (s.isEmpty() && inputSearchText.text.isNotEmpty()) View.VISIBLE else View.GONE
             recyclerView.isVisible = false
             noInternetView.isVisible = false
             return
         }
-
-        trackService.search(s).enqueue(object : retrofit2.Callback<TrackResponse> {
-            override fun onResponse(call: retrofit2.Call<TrackResponse>, response: retrofit2.Response<TrackResponse>) {
+        searchJob = trackService.search(s)
+        searchJob?.enqueue(object : retrofit2.Callback<TrackResponse> {
+            override fun onResponse(
+                call: retrofit2.Call<TrackResponse>,
+                response: retrofit2.Response<TrackResponse>
+            ) {
+                showSearchHistory(false)
                 if (response.isSuccessful) {
                     val trackList = response.body()?.results ?: emptyList()
                     trackAdapter.updateTracks(trackList)
@@ -143,13 +186,27 @@ class SearchActivity : AppCompatActivity() {
                     noInternetView.isVisible = true
                 }
             }
+
             override fun onFailure(call: retrofit2.Call<TrackResponse>, t: Throwable) {
                 noResultsView.isVisible = false
                 recyclerView.isVisible = false
                 noInternetView.isVisible = true
+                searchHistoryView.isVisible = false
             }
         })
     }
+
+
+    private fun showSearchHistory(isVisible: Boolean) {
+        searchHistoryView.visibility = if (isVisible && searchHistoryAdapter.itemCount > 0)
+            View.VISIBLE else View.GONE
+    }
+
+    private fun updateSearchHistory() {
+        val historyList = searchHistory.getHistory()
+        searchHistoryAdapter.updateTracks(historyList)
+    }
+
 
     private companion object {
         const val SEARCH_VALUE = "SEARCH_VALUE"

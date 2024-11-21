@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -17,6 +18,13 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_activity)
+
+        // Theme Switcher
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
+        themeSwitcher.isChecked = (applicationContext as App).isDarkTheme()
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            (applicationContext as App).switchTheme(checked)
+        }
 
         // button Share
         val btnShare = findViewById<View>(R.id.btn_share)
@@ -37,15 +45,15 @@ class SettingsActivity : AppCompatActivity() {
             intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.support_mail_subject))
             intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.support_mail_to)))
             intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.support_mail_text))
-            startActivity( intent )
+            startActivity(intent)
         }
 
         // button License
         val btnLicense = findViewById<View>(R.id.btn_license)
         btnLicense.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse( getString(R.string.offer_url) )
-            startActivity( intent )
+            intent.data = Uri.parse(getString(R.string.offer_url))
+            startActivity(intent)
         }
 
         // button Назад
