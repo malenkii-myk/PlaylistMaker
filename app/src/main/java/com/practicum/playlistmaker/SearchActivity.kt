@@ -2,7 +2,6 @@ package com.practicum.playlistmaker
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -51,9 +50,6 @@ class SearchActivity : AppCompatActivity() {
     private var trackAdapter = TrackAdapter(emptyList()) { track ->
         searchHistory.addTrack(track)
         updateSearchHistory()
-        val intent = Intent(this, PlayerActivity::class.java)
-        intent.putExtra(App.KEY_INTENT_TRACK_DATA, track)
-        startActivity(intent)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

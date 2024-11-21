@@ -23,11 +23,4 @@
     <string name="no_internet">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
     <string name="search_you_looking">Вы искали</string>
     <string name="btn_clear_history">Очистить историю</string>
-
-    <string name="track_length">Длительность</string>
-    <string name="track_album">Альбом</string>
-    <string name="track_year">Год</string>
-    <string name="track_genre">Жанр</string>
-    <string name="track_country">Страна</string>
-
 </resources>

@@ -15,8 +15,6 @@
         <item name="img_search_error_color">@color/white</item>
         <item name="search_textedit_bg">@color/white</item>
 
-        <item name="activity_bg">@color/black</item>
-        <item name="icon_color">@color/white</item>
     </style>
 
     <style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" />
