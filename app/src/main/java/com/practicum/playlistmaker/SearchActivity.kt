@@ -51,9 +51,7 @@ class SearchActivity : AppCompatActivity() {
     private var trackAdapter = TrackAdapter(emptyList()) { track ->
         searchHistory.addTrack(track)
         updateSearchHistory()
-        val intent = Intent(this, PlayerActivity::class.java)
-        intent.putExtra(App.KEY_INTENT_TRACK_DATA, track)
-        startActivity(intent)
+        clickTrack(track)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -82,7 +80,11 @@ class SearchActivity : AppCompatActivity() {
         searchHistory = SearchHistory((applicationContext as App).sharedPreferences)
         searchHistoryRecycler = findViewById(R.id.recycler_search_history)
         searchHistoryRecycler.layoutManager = LinearLayoutManager(this)
-        searchHistoryAdapter = SearchHistoryAdapter(emptyList())
+        searchHistoryAdapter = SearchHistoryAdapter(emptyList()) { track ->
+            searchHistory.addTrack(track)
+            updateSearchHistory()
+            clickTrack(track)
+        }
         searchHistoryRecycler.adapter = searchHistoryAdapter
         searchHistoryView = findViewById(R.id.search_history_view)
         updateSearchHistory()
@@ -158,6 +160,12 @@ class SearchActivity : AppCompatActivity() {
             finish()
         }
 
+    }
+
+    private fun clickTrack(track: Track){
+        val intent = Intent(this, PlayerActivity::class.java)
+        intent.putExtra(App.KEY_INTENT_TRACK_DATA, track)
+        startActivity(intent)
     }
 
 
