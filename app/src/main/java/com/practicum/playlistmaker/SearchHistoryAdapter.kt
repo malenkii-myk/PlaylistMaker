@@ -16,6 +16,9 @@ class SearchHistoryAdapter(
 
     override fun onBindViewHolder(holder: TracksViewHolder, position: Int) {
         holder.bind(tracks[position])
+        holder.itemView.setOnClickListener {
+            callback(tracks[position])
+        }
     }
 
     override fun getItemCount(): Int {

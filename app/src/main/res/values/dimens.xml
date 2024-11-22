@@ -20,4 +20,6 @@
     <dimen name="tracklist_art_radius">2dp</dimen>
     <dimen name="tracklist_item_height">61dp</dimen>
 
+    <dimen name="player_art_radius">8dp</dimen>
+
 </resources>
