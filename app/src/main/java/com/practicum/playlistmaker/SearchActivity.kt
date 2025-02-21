@@ -17,6 +17,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -38,6 +39,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchHistoryRecycler: RecyclerView
     private lateinit var searchHistoryAdapter: SearchHistoryAdapter
     private lateinit var searchHistory: SearchHistory
+    private lateinit var progressBar: ProgressBar
     private var searchJob: Call<TrackResponse>? = null
 
     private var searchValue: String = SEARCH_DEF

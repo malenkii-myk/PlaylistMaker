@@ -16,15 +16,22 @@ data class Track(
     val releaseDate: String,
     val primaryGenreName: String,
     val country: String,
+    val previewUrl: String
 ): Serializable {
 
     fun getFormattedTrackTime(): String {
-        return SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis)
+        return getFormattedTrackTime(trackTimeMillis)
     }
 
     fun getCoverArtwork():String {
         val artworkUrl = artworkUrl100 ?: ""
         return artworkUrl.replaceAfterLast('/', "512x512bb.jpg")
+    }
+
+    companion object{
+        fun getFormattedTrackTime(trackTimeMillis: Long): String {
+            return SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis)
+        }
     }
 
 
