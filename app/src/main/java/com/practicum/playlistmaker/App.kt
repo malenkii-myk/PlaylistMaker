@@ -37,12 +37,18 @@ class App : Application() {
     }
 
     companion object {
+        // SHARED_PREFERENCES
         const val SHARED_PREFERENCES_NAME = "playlistmaker_preferences"
         const val SP_DARK_THEME = "dark_theme"
         const val SP_SEARCH_HISTORY = "search_history"
         const val KEY_INTENT_TRACK_DATA = "track_data"
+        // SEARCH HISTORY ACTIVITY
         const val MAX_SEARCH_HISTORY = 10
         const val MIN_LENGTH_SEARCH_QUERY = 3
+        const val SEARCH_DEBOUNCE_DELAY = 1000L
+        const val CLICK_DEBOUNCE_DELAY = 1000L
+        // PLAYER ACTIVITY
+        const val PLAYER_HANDLER_DELAY = 1000L
     }
 
 

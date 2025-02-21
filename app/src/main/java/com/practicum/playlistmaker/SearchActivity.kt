@@ -5,6 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -17,6 +19,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
@@ -38,6 +41,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchHistoryRecycler: RecyclerView
     private lateinit var searchHistoryAdapter: SearchHistoryAdapter
     private lateinit var searchHistory: SearchHistory
+    private lateinit var progressBar: ProgressBar
     private var searchJob: Call<TrackResponse>? = null
 
     private var searchValue: String = SEARCH_DEF
@@ -49,10 +53,18 @@ class SearchActivity : AppCompatActivity() {
         .build()
     private val trackService = retrofit.create(trackApi::class.java)
     private var trackAdapter = TrackAdapter(emptyList()) { track ->
-        searchHistory.addTrack(track)
-        updateSearchHistory()
-        clickTrack(track)
+        if (clickDebounce()) {
+            searchHistory.addTrack(track)
+            updateSearchHistory()
+            clickTrack(track)
+        }
     }
+
+    // Debounce
+    private var isClickAllowed = true
+    private val clickHandler = Handler(Looper.getMainLooper())
+    private val searchHandler = Handler(Looper.getMainLooper())
+    private val searchRunnable = Runnable { searchTracksAPI(searchValue) }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -75,6 +87,8 @@ class SearchActivity : AppCompatActivity() {
         noInternetView = findViewById(R.id.no_internet)
 
         inputSearchText.setText(searchValue)
+
+        progressBar = findViewById(R.id.progress_bar)
 
         // history list
         searchHistory = SearchHistory((applicationContext as App).sharedPreferences)
@@ -121,8 +135,21 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.isVisible = !s.isNullOrEmpty()
                 searchValue = s.toString().trim()
-                showSearchHistory(inputSearchText.hasFocus() && s?.isEmpty() == true)
-                searchTracks(searchValue)
+                if (searchValue.isEmpty() || searchValue.length < App.MIN_LENGTH_SEARCH_QUERY) {
+                    searchHandler.removeCallbacks(searchRunnable)
+                    searchJob = null
+                    progressBar.isVisible = false
+                    noResultsView.isVisible = false
+                    noInternetView.isVisible = false
+                    recyclerView.isVisible = false
+                    showSearchHistory(inputSearchText.hasFocus() && searchValue.isEmpty())
+                    return
+                }
+                progressBar.isVisible = true
+                noResultsView.isVisible = false
+                noInternetView.isVisible = false
+                recyclerView.isVisible = false
+                searchDebounce()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -140,7 +167,8 @@ class SearchActivity : AppCompatActivity() {
         // button Done
         inputSearchText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                searchTracks(searchValue)
+                searchHandler.removeCallbacks(searchRunnable)
+                searchTracksAPI(searchValue)
                 searchView.hideKeyboard()
                 true
             }
@@ -150,7 +178,8 @@ class SearchActivity : AppCompatActivity() {
         // button Refresh
         val btnRefresh = findViewById<Button>(R.id.btn_refresh)
         btnRefresh.setOnClickListener {
-            searchTracks(searchValue)
+            searchHandler.removeCallbacks(searchRunnable)
+            searchTracksAPI(searchValue)
         }
 
 
@@ -162,13 +191,60 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
+    override fun onPause() {
+        super.onPause()
+        searchHandler.removeCallbacksAndMessages(null)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        searchHandler.removeCallbacksAndMessages(null)
+    }
+
     private fun clickTrack(track: Track){
         val intent = Intent(this, PlayerActivity::class.java)
         intent.putExtra(App.KEY_INTENT_TRACK_DATA, track)
         startActivity(intent)
     }
 
+    private fun searchTracksAPI(s: String) {
+        if (s.isEmpty() || s.length < App.MIN_LENGTH_SEARCH_QUERY) return
+        showSearchHistory(false)
+        noInternetView.isVisible = false
+        noResultsView.isVisible = false
+        progressBar.visibility = View.VISIBLE
+        searchJob = trackService.search(s)
+        searchJob?.enqueue(object : retrofit2.Callback<TrackResponse> {
+            override fun onResponse(
+                call: retrofit2.Call<TrackResponse>,
+                response: retrofit2.Response<TrackResponse>
+            ) {
+                progressBar.visibility = View.GONE
+                if (response.isSuccessful) {
+                    val trackList = response.body()?.results ?: emptyList()
+                    trackAdapter.updateTracks(trackList)
+                    noResultsView.isVisible = trackList.isEmpty()
+                    recyclerView.isVisible = trackList.isNotEmpty()
+                    noInternetView.isVisible = false
+                } else {
+                    progressBar.visibility = View.GONE
+                    noResultsView.isVisible = false
+                    recyclerView.isVisible = false
+                    noInternetView.isVisible = true
+                }
+            }
 
+            override fun onFailure(call: retrofit2.Call<TrackResponse>, t: Throwable) {
+                progressBar.visibility = View.GONE
+                noResultsView.isVisible = false
+                recyclerView.isVisible = false
+                noInternetView.isVisible = true
+                searchHistoryView.isVisible = false
+            }
+        })
+    }
+
+    @Deprecated("Use searchTracksAPI")
     private fun searchTracks(s: String) {
         searchJob?.cancel()
         if (s.isEmpty() || s.length < App.MIN_LENGTH_SEARCH_QUERY) {
@@ -193,6 +269,7 @@ class SearchActivity : AppCompatActivity() {
                     recyclerView.isVisible = trackList.isNotEmpty()
                     noInternetView.isVisible = false
                 } else {
+                    progressBar.visibility = View.GONE
                     noResultsView.isVisible = false
                     recyclerView.isVisible = false
                     noInternetView.isVisible = true
@@ -200,6 +277,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: retrofit2.Call<TrackResponse>, t: Throwable) {
+                progressBar.visibility = View.GONE
                 noResultsView.isVisible = false
                 recyclerView.isVisible = false
                 noInternetView.isVisible = true
@@ -217,6 +295,20 @@ class SearchActivity : AppCompatActivity() {
     private fun updateSearchHistory() {
         val historyList = searchHistory.getHistory()
         searchHistoryAdapter.updateTracks(historyList)
+    }
+
+    private fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            clickHandler.postDelayed({ isClickAllowed = true }, App.CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
+
+    private fun searchDebounce() {
+        searchHandler.removeCallbacks(searchRunnable)
+        searchHandler.postDelayed(searchRunnable, App.SEARCH_DEBOUNCE_DELAY)
     }
 
 
