@@ -46,6 +46,7 @@ class App : Application() {
         const val MAX_SEARCH_HISTORY = 10
         const val MIN_LENGTH_SEARCH_QUERY = 3
         const val SEARCH_DEBOUNCE_DELAY = 300L
+        const val CLICK_DEBOUNCE_DELAY = 1000L
         // PLAYER ACTIVITY
         const val PLAYER_HANDLER_DELAY = 1000L
     }

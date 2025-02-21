@@ -5,6 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -56,6 +58,9 @@ class SearchActivity : AppCompatActivity() {
         clickTrack(track)
     }
 
+    private var isClickAllowed = true
+    private val handler = Handler(Looper.getMainLooper())
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(SEARCH_VALUE, searchValue)
@@ -77,6 +82,8 @@ class SearchActivity : AppCompatActivity() {
         noInternetView = findViewById(R.id.no_internet)
 
         inputSearchText.setText(searchValue)
+
+        progressBar = findViewById(R.id.progress_bar)
 
         // history list
         searchHistory = SearchHistory((applicationContext as App).sharedPreferences)
@@ -165,14 +172,17 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun clickTrack(track: Track){
-        val intent = Intent(this, PlayerActivity::class.java)
-        intent.putExtra(App.KEY_INTENT_TRACK_DATA, track)
-        startActivity(intent)
+        if (clickDebounce()) {
+            val intent = Intent(this, PlayerActivity::class.java)
+            intent.putExtra(App.KEY_INTENT_TRACK_DATA, track)
+            startActivity(intent)
+            }
     }
 
 
     private fun searchTracks(s: String) {
         searchJob?.cancel()
+        progressBar.visibility = View.VISIBLE
         if (s.isEmpty() || s.length < App.MIN_LENGTH_SEARCH_QUERY) {
             trackAdapter.updateTracks(emptyList())
             noResultsView.visibility =
@@ -195,6 +205,7 @@ class SearchActivity : AppCompatActivity() {
                     recyclerView.isVisible = trackList.isNotEmpty()
                     noInternetView.isVisible = false
                 } else {
+                    progressBar.visibility = View.GONE
                     noResultsView.isVisible = false
                     recyclerView.isVisible = false
                     noInternetView.isVisible = true
@@ -202,6 +213,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: retrofit2.Call<TrackResponse>, t: Throwable) {
+                progressBar.visibility = View.GONE
                 noResultsView.isVisible = false
                 recyclerView.isVisible = false
                 noInternetView.isVisible = true
@@ -219,6 +231,15 @@ class SearchActivity : AppCompatActivity() {
     private fun updateSearchHistory() {
         val historyList = searchHistory.getHistory()
         searchHistoryAdapter.updateTracks(historyList)
+    }
+
+    private fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, App.CLICK_DEBOUNCE_DELAY)
+        }
+        return current
     }
 
 
