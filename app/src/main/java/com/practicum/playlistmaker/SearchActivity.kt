@@ -212,14 +212,14 @@ class SearchActivity : AppCompatActivity() {
         showSearchHistory(false)
         noInternetView.isVisible = false
         noResultsView.isVisible = false
-        progressBar.visibility = View.VISIBLE
+        progressBar.isVisible = true
         searchJob = trackService.search(s)
         searchJob?.enqueue(object : retrofit2.Callback<TrackResponse> {
             override fun onResponse(
                 call: retrofit2.Call<TrackResponse>,
                 response: retrofit2.Response<TrackResponse>
             ) {
-                progressBar.visibility = View.GONE
+                progressBar.isVisible = false
                 if (response.isSuccessful) {
                     val trackList = response.body()?.results ?: emptyList()
                     trackAdapter.updateTracks(trackList)
@@ -227,7 +227,7 @@ class SearchActivity : AppCompatActivity() {
                     recyclerView.isVisible = trackList.isNotEmpty()
                     noInternetView.isVisible = false
                 } else {
-                    progressBar.visibility = View.GONE
+                    progressBar.isVisible = false
                     noResultsView.isVisible = false
                     recyclerView.isVisible = false
                     noInternetView.isVisible = true
@@ -235,7 +235,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: retrofit2.Call<TrackResponse>, t: Throwable) {
-                progressBar.visibility = View.GONE
+                progressBar.isVisible = false
                 noResultsView.isVisible = false
                 recyclerView.isVisible = false
                 noInternetView.isVisible = true
@@ -243,49 +243,6 @@ class SearchActivity : AppCompatActivity() {
             }
         })
     }
-
-    @Deprecated("Use searchTracksAPI")
-    private fun searchTracks(s: String) {
-        searchJob?.cancel()
-        if (s.isEmpty() || s.length < App.MIN_LENGTH_SEARCH_QUERY) {
-            trackAdapter.updateTracks(emptyList())
-            noResultsView.visibility =
-                if (s.isEmpty() && inputSearchText.text.isNotEmpty()) View.VISIBLE else View.GONE
-            recyclerView.isVisible = false
-            noInternetView.isVisible = false
-            return
-        }
-        searchJob = trackService.search(s)
-        searchJob?.enqueue(object : retrofit2.Callback<TrackResponse> {
-            override fun onResponse(
-                call: retrofit2.Call<TrackResponse>,
-                response: retrofit2.Response<TrackResponse>
-            ) {
-                showSearchHistory(false)
-                if (response.isSuccessful) {
-                    val trackList = response.body()?.results ?: emptyList()
-                    trackAdapter.updateTracks(trackList)
-                    noResultsView.isVisible = trackList.isEmpty()
-                    recyclerView.isVisible = trackList.isNotEmpty()
-                    noInternetView.isVisible = false
-                } else {
-                    progressBar.visibility = View.GONE
-                    noResultsView.isVisible = false
-                    recyclerView.isVisible = false
-                    noInternetView.isVisible = true
-                }
-            }
-
-            override fun onFailure(call: retrofit2.Call<TrackResponse>, t: Throwable) {
-                progressBar.visibility = View.GONE
-                noResultsView.isVisible = false
-                recyclerView.isVisible = false
-                noInternetView.isVisible = true
-                searchHistoryView.isVisible = false
-            }
-        })
-    }
-
 
     private fun showSearchHistory(isVisible: Boolean) {
         searchHistoryView.visibility = if (isVisible && searchHistoryAdapter.itemCount > 0)
