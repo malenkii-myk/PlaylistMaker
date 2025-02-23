@@ -1,9 +1,7 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.domain.model
 
-import androidx.annotation.Nullable
 import java.io.Serializable
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 data class Track(
@@ -11,7 +9,9 @@ data class Track(
     val trackName: String, // Название композиции
     val artistName: String, // Имя исполнителя
     val trackTimeMillis: Long, // Продолжительность трека
-    val artworkUrl100: String? = null, // Ссылка на изображение обложки
+    val trackTimeFormatted: String,
+    val artworkUrl100: String, // Ссылка на изображение обложки
+    val artworkUrl: String,
     val collectionName: String,
     val releaseDate: String,
     val primaryGenreName: String,
@@ -24,13 +24,18 @@ data class Track(
     }
 
     fun getCoverArtwork():String {
-        val artworkUrl = artworkUrl100 ?: ""
-        return artworkUrl.replaceAfterLast('/', "512x512bb.jpg")
+        return getCoverArtwork(artworkUrl100)
     }
 
     companion object{
         fun getFormattedTrackTime(trackTimeMillis: Long): String {
             return SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis)
+        }
+
+        fun getCoverArtwork(artworkUrl100: String): String {
+            return if (artworkUrl100.isNotEmpty()) {
+                artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
+            } else ""
         }
     }
 

@@ -1,15 +1,18 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.data
 
-import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.practicum.playlistmaker.App
+import com.practicum.playlistmaker.domain.api.SearchHistoryRepository
+import com.practicum.playlistmaker.domain.model.Track
 
 
-class SearchHistory(private val sharedPreferences: SharedPreferences) {
+class SearchHistoryRepositoryImpl(private val storageClient: StorageClient):
+    SearchHistoryRepository {
 
     private val gson = Gson()
 
-    fun addTrack(track: Track) {
+    override fun addTrack(track: Track) {
         val historyList = getHistory().toMutableList()
         if (historyList.contains(track)) {
             historyList.remove(track)
@@ -21,19 +24,19 @@ class SearchHistory(private val sharedPreferences: SharedPreferences) {
         saveHistory(historyList)
     }
 
-    fun getHistory(): List<Track> {
-        val json = sharedPreferences.getString(App.SP_SEARCH_HISTORY, null) ?: return emptyList()
+    override fun getHistory(): List<Track> {
+        val json = storageClient.getString(App.SP_SEARCH_HISTORY)
         val type = object : TypeToken<List<Track>>() {}.type
         return gson.fromJson(json, type)
     }
 
-    fun clearHistory() {
-        sharedPreferences.edit().remove(App.SP_SEARCH_HISTORY).apply()
+    override fun clearHistory() {
+        storageClient.writeString(App.SP_SEARCH_HISTORY, "")
     }
 
     private fun saveHistory(history: List<Track>) {
         val json = gson.toJson(history)
-        sharedPreferences.edit().putString(App.SP_SEARCH_HISTORY, json).apply()
+        storageClient.writeString(App.SP_SEARCH_HISTORY, json)
     }
 
 }
