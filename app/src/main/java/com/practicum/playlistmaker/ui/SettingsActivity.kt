@@ -1,16 +1,15 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.ui
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.PreferenceFragmentCompat
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.practicum.playlistmaker.App
+import com.practicum.playlistmaker.R
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -21,9 +20,9 @@ class SettingsActivity : AppCompatActivity() {
 
         // Theme Switcher
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
-        themeSwitcher.isChecked = (applicationContext as App).isDarkTheme()
+        themeSwitcher.isChecked = (applicationContext as App).settingsInteractor.isDarkTheme()
         themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
-            (applicationContext as App).switchTheme(checked)
+            (applicationContext as App).settingsInteractor.switchTheme(checked)
         }
 
         // button Share

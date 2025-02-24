@@ -1,22 +1,18 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.ui
 
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.View
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import dpToPx
+import com.practicum.playlistmaker.App
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.domain.model.Track
 
 class PlayerActivity : AppCompatActivity() {
 
@@ -142,7 +138,7 @@ class PlayerActivity : AppCompatActivity() {
         trackPlayTime.text = Track.getFormattedTrackTime(time)
     }
 
-    companion object {
+    private companion object {
         private const val STATE_DEFAULT = 0
         private const val STATE_PREPARED = 1
         private const val STATE_PLAYING = 2

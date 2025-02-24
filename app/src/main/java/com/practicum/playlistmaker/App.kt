@@ -3,42 +3,29 @@ package com.practicum.playlistmaker
 import android.app.Application
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
+import com.practicum.playlistmaker.data.StorageClient
+import com.practicum.playlistmaker.domain.api.SettingsInteractor
 
 class App : Application() {
 
     private var darkTheme = false
-    lateinit var sharedPreferences: SharedPreferences
+    lateinit var settingsInteractor: SettingsInteractor
 
     override fun onCreate() {
-        sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE)
-        darkTheme = sharedPreferences.getBoolean(SP_DARK_THEME, false)
-        switchTheme(darkTheme)
 
         super.onCreate()
+
+        Creator.initApplication(this)
+        settingsInteractor = Creator.providerSettingsInteractor()
+        darkTheme = settingsInteractor.darkTheme
+        settingsInteractor.switchTheme(darkTheme)
     }
 
-    fun isDarkTheme(): Boolean {
-        return darkTheme
-    }
 
-    fun switchTheme(darkThemeEnabled: Boolean) {
-        darkTheme = darkThemeEnabled
-        //val sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_NAME, MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putBoolean(SP_DARK_THEME, darkThemeEnabled)
-        editor.apply()
-        AppCompatDelegate.setDefaultNightMode(
-            if (darkThemeEnabled) {
-                AppCompatDelegate.MODE_NIGHT_YES
-            } else {
-                AppCompatDelegate.MODE_NIGHT_NO
-            }
-        )
-    }
 
     companion object {
         // SHARED_PREFERENCES
-        const val SHARED_PREFERENCES_NAME = "playlistmaker_preferences"
+        const val SHARED_PREFERENCES_NAME = "playlistmaker_3a6ad9aa8a"
         const val SP_DARK_THEME = "dark_theme"
         const val SP_SEARCH_HISTORY = "search_history"
         const val KEY_INTENT_TRACK_DATA = "track_data"
