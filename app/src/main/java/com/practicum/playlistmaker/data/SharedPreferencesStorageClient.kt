@@ -25,7 +25,11 @@ class SharedPreferencesStorageClient(context: Context): StorageClient {
 
     override fun writeString(field: String, value: String) {
         val editor = sharedPreferences.edit()
-        editor.putString(field, value)
+        if (field.isEmpty()) {
+            editor.remove(field)
+        } else {
+            editor.putString(field, value)
+        }
         editor.apply()
     }
 }

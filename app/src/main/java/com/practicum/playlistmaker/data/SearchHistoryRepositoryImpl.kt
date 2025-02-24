@@ -26,6 +26,9 @@ class SearchHistoryRepositoryImpl(private val storageClient: StorageClient):
 
     override fun getHistory(): List<Track> {
         val json = storageClient.getString(App.SP_SEARCH_HISTORY)
+        if (json.isBlank()) {
+            return emptyList()
+        }
         val type = object : TypeToken<List<Track>>() {}.type
         return gson.fromJson(json, type)
     }

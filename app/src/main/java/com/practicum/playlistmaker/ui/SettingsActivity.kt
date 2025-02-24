@@ -20,9 +20,9 @@ class SettingsActivity : AppCompatActivity() {
 
         // Theme Switcher
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
-        themeSwitcher.isChecked = (applicationContext as App).isDarkTheme()
+        themeSwitcher.isChecked = (applicationContext as App).settingsInteractor.isDarkTheme()
         themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
-            (applicationContext as App).switchTheme(checked)
+            (applicationContext as App).settingsInteractor.switchTheme(checked)
         }
 
         // button Share
